@@ -2,8 +2,10 @@ ARG BASE_VERSION=3.8.2-alpine3.11
 FROM python:${BASE_VERSION}
 
 # set version label
-ARG MYLAR_COMMIT=v0.4.1
+ARG MYLAR_COMMIT=$(curl -sX GET "https://api.github.com/repos/mylar3/mylar3/releases/latest" \
+	| awk '/tag_name/{print $4;exit}' FS='[""]')
 LABEL version ${BASE_VERSION}_${MYLAR_COMMIT}
+ENV TZ="Etc/UTC"
 
 RUN \
 echo "**** install system packages ****" && \
