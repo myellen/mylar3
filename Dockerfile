@@ -21,10 +21,13 @@ echo "**** install system packages ****" && \
  zlib-dev=1.2.11-r3 \
  jpeg-dev=8-r6
 
+
 # It might be better to check out release tags than python3-dev HEAD.
 # For development work I reccomend mounting a full git repo from the
 # docker host over /app/mylar.
 RUN echo "**** install app ****" && \
+ MYLAR_COMMIT=$(curl -sX GET "https://api.github.com/repos/mylar3/mylar3/releases/latest" \
+	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  git config --global advice.detachedHead false && \
  git clone https://github.com/mylar3/mylar3.git --depth 1 --branch ${MYLAR_COMMIT} --single-branch /app/mylar
 
