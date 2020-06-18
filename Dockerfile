@@ -10,6 +10,7 @@ RUN \
 echo "**** install system packages ****" && \
  apk add --no-cache \
  curl \
+ tzdata \
  git \
  # cfscrape dependecies
  nodejs=12.15.0-r1 \
