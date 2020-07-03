@@ -28,15 +28,16 @@ echo "**** install system packages ****" && \
 # docker host over /app/mylar.
 ADD https://api.github.com/repos/mylar3/mylar3/releases/latest latest.json
 RUN echo $(cat latest.json | awk '/tag_name/{print $4;exit}' FS='[""]')
+RUN echo $(curl -sX GET "https://api.github.com/repos/mylar3/mylar3/releases/latest" | awk '/tag_name/{print $4;exit}' FS='[""]')
 RUN echo "**** install app ****" && \
- MYLAR_COMMIT=$(curl -sX GET "https://api.github.com/repos/mylar3/mylar3/releases/latest" \
+ MYLAR_COMMIT=$(cat latest.json \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  git config --global advice.detachedHead false && \
  git clone https://github.com/mylar3/mylar3.git --depth 1 --branch ${MYLAR_COMMIT} --single-branch /app/mylar
 
-RUN echo "**** install requirements ****" && \
- pip3 install --no-cache-dir -U -r /app/mylar/requirements.txt && \
- rm -rf ~/.cache/pip/*
+#RUN echo "**** install requirements ****" && \
+# pip3 install --no-cache-dir -U -r /app/mylar/requirements.txt && \
+# rm -rf ~/.cache/pip/*
 
 # TODO image could be further slimmed by moving python wheel building into a
 # build image and copying the results to the final image.
