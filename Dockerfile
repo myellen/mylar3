@@ -11,6 +11,7 @@ echo "**** install system packages ****" && \
  apk add --no-cache \
  curl \
  tzdata \
+ jq \
  git \
  # cfscrape dependecies
  nodejs=12.15.0-r1 \
@@ -26,13 +27,10 @@ echo "**** install system packages ****" && \
 # It might be better to check out release tags than python3-dev HEAD.
 # For development work I reccomend mounting a full git repo from the
 # docker host over /app/mylar.
-ADD https://api.github.com/repos/mylar3/mylar3/releases/latest latest
-RUN cat latest
-RUN echo $(cat latest | awk '/tag_name/{print $4;exit}' FS='[""]')
-RUN echo $(curl -sX GET "https://api.github.com/repos/mylar3/mylar3/releases/latest" | awk '/tag_name/{print $4;exit}' FS='[""]')
+ADD https://api.github.com/repos/mylar3/mylar3/releases/latest latest.json
 RUN echo "**** install app ****" && \
  MYLAR_COMMIT=$(cat latest.json \
-	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
+	| jq -j .tag_name) && \
  git config --global advice.detachedHead false && \
  git clone https://github.com/mylar3/mylar3.git --depth 1 --branch ${MYLAR_COMMIT} --single-branch /app/mylar
 
