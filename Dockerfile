@@ -27,9 +27,9 @@ echo "**** install system packages ****" && \
 # For development work I reccomend mounting a full git repo from the
 # docker host over /app/mylar.
 ADD https://api.github.com/repos/mylar3/mylar3/releases/latest latest.json
-RUN bash -c "echo $(cat latest.json | awk '/tag_name/{print $4;exit}' FS='[""]')"
+RUN echo $(cat latest.json | awk '/tag_name/{print $4;exit}' FS='[""]')
 RUN echo "**** install app ****" && \
- MYLAR_COMMIT=$(cat latest.json \
+ MYLAR_COMMIT=$(curl -sX https://api.github.com/repos/mylar3/mylar3/releases/latest \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  git config --global advice.detachedHead false && \
  git clone https://github.com/mylar3/mylar3.git --depth 1 --branch ${MYLAR_COMMIT} --single-branch /app/mylar
