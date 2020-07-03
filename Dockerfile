@@ -34,9 +34,9 @@ RUN echo "**** install app ****" && \
  git config --global advice.detachedHead false && \
  git clone https://github.com/mylar3/mylar3.git --depth 1 --branch ${MYLAR_COMMIT} --single-branch /app/mylar
 
-#RUN echo "**** install requirements ****" && \
-# pip3 install --no-cache-dir -U -r /app/mylar/requirements.txt && \
-# rm -rf ~/.cache/pip/*
+RUN echo "**** install requirements ****" && \
+ pip3 install --no-cache-dir -U -r /app/mylar/requirements.txt && \
+ rm -rf ~/.cache/pip/*
 
 # TODO image could be further slimmed by moving python wheel building into a
 # build image and copying the results to the final image.
