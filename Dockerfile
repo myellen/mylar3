@@ -26,6 +26,7 @@ echo "**** install system packages ****" && \
 # It might be better to check out release tags than python3-dev HEAD.
 # For development work I reccomend mounting a full git repo from the
 # docker host over /app/mylar.
+ADD https://api.github.com/repos/mylar3/mylar3/releases/latest latest.json
 RUN echo "**** install app ****" && \
  MYLAR_COMMIT=$(curl -sX GET "https://api.github.com/repos/mylar3/mylar3/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
