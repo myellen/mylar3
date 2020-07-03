@@ -27,7 +27,7 @@ echo "**** install system packages ****" && \
 # For development work I reccomend mounting a full git repo from the
 # docker host over /app/mylar.
 ADD https://api.github.com/repos/mylar3/mylar3/releases/latest latest.json
-#RUN echo $(cat latest.json | awk '/tag_name/{print $4;exit}' FS='[""]')
+RUN echo $(cat latest.json | awk '/tag_name/{print $4;exit}' FS='[""]')
 RUN echo "**** install app ****" && \
  MYLAR_COMMIT=$(curl -sX GET "https://api.github.com/repos/mylar3/mylar3/releases/latest" \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
