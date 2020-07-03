@@ -28,7 +28,7 @@ echo "**** install system packages ****" && \
 # docker host over /app/mylar.
 ADD https://api.github.com/repos/mylar3/mylar3/releases/latest latest.json
 RUN echo "**** install app ****" && \
- MYLAR_COMMIT=$(curl -sX GET "https://api.github.com/repos/mylar3/mylar3/releases/latest" \
+ MYLAR_COMMIT=$(cat latest.json \
 	| awk '/tag_name/{print $4;exit}' FS='[""]') && \
  git config --global advice.detachedHead false && \
  git clone https://github.com/mylar3/mylar3.git --depth 1 --branch ${MYLAR_COMMIT} --single-branch /app/mylar
